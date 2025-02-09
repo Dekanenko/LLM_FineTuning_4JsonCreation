@@ -3,6 +3,7 @@ from langchain.prompts import StringPromptTemplate
 
 from src.models import *
 
+
 class BasePair(BaseModel):
     model: BaseModel = None
     text_generation_prompt: StringPromptTemplate = None
@@ -15,7 +16,7 @@ class CharacterNamesPair(BasePair):
 
         def format(self):
             return self.template
-    
+
     class JsonGenerationPrompt(StringPromptTemplate):
         template = (
             "You are a name and surname extractor. Your task is to identify and extract the names and surnames of characters from the given text.\n"
@@ -32,15 +33,19 @@ class CharacterNamesPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 input_text=input_text,
@@ -75,15 +80,19 @@ class FictionalCharacterPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -91,7 +100,6 @@ class FictionalCharacterPair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
@@ -105,7 +113,7 @@ class TShirtOrderPair(BasePair):
 
         def format(self):
             return self.template
-    
+
     class JsonGenerationPrompt(StringPromptTemplate):
         template = (
             "You are a t-shirt order extractor. Your task is to identify and extract the t-shirt order details from the given text.\n"
@@ -122,15 +130,19 @@ class TShirtOrderPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 input_text=input_text,
@@ -139,7 +151,7 @@ class TShirtOrderPair(BasePair):
             )
 
             return prompt
-    
+
     def __init__(self):
         super().__init__()
         self.model = TShirtOrder
@@ -168,15 +180,19 @@ class FilmIdeaPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -184,7 +200,6 @@ class FilmIdeaPair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
@@ -212,15 +227,19 @@ class ItineraryPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -228,7 +247,6 @@ class ItineraryPair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
@@ -256,15 +274,19 @@ class RecipePair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -272,7 +294,6 @@ class RecipePair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
@@ -286,7 +307,7 @@ class EventPair(BasePair):
 
         def format(self):
             return self.template
-    
+
     class JsonGenerationPrompt(StringPromptTemplate):
         template = (
             "You are an event details extractor. Your task is to identify and extract event information from the given text.\n"
@@ -304,15 +325,19 @@ class EventPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 input_text=input_text,
@@ -321,7 +346,7 @@ class EventPair(BasePair):
             )
 
             return prompt
-    
+
     def __init__(self):
         super().__init__()
         self.model = Events
@@ -335,7 +360,7 @@ class ResumePair(BasePair):
 
         def format(self):
             return self.template
-    
+
     class JsonGenerationPrompt(StringPromptTemplate):
         template = (
             "You are a resume information extractor. Your task is to identify and extract resume details from the given text.\n"
@@ -354,15 +379,19 @@ class ResumePair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 input_text=input_text,
@@ -371,7 +400,7 @@ class ResumePair(BasePair):
             )
 
             return prompt
-    
+
     def __init__(self):
         super().__init__()
         self.model = Resume
@@ -400,15 +429,19 @@ class GameArtifactPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -416,14 +449,12 @@ class GameArtifactPair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
         self.model = GameArtifact
         self.json_generation_prompt = self.JsonGenerationPrompt(input_variables=[])
 
-    
 
 class BookReviewPair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
@@ -431,7 +462,7 @@ class BookReviewPair(BasePair):
 
         def format(self):
             return self.template
-    
+
     class JsonGenerationPrompt(StringPromptTemplate):
         template = (
             "You are a book review information extractor. Your task is to identify and extract book review details from the given text.\n"
@@ -450,15 +481,19 @@ class BookReviewPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 input_text=input_text,
@@ -467,7 +502,7 @@ class BookReviewPair(BasePair):
             )
 
             return prompt
-    
+
     def __init__(self):
         super().__init__()
         self.model = BookReview
@@ -481,7 +516,7 @@ class TextSummaryPair(BasePair):
 
         def format(self):
             return self.template
-    
+
     class JsonGenerationPrompt(StringPromptTemplate):
         template = (
             "You are a text summarizer. Your task is to analyze and summarize the given text.\n"
@@ -499,15 +534,19 @@ class TextSummaryPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 input_text=input_text,
@@ -516,7 +555,7 @@ class TextSummaryPair(BasePair):
             )
 
             return prompt
-    
+
     def __init__(self):
         super().__init__()
         self.model = TextSummary
@@ -545,15 +584,19 @@ class GameIdeaPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -561,7 +604,6 @@ class GameIdeaPair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
@@ -590,15 +632,19 @@ class HousePair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -606,13 +652,12 @@ class HousePair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()
         self.model = House
         self.json_generation_prompt = self.JsonGenerationPrompt(input_variables=[])
-    
+
 
 class SollarSystemPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
@@ -635,15 +680,19 @@ class SollarSystemPair(BasePair):
         )
 
         def format(
-                self,
-                input_text: str,
-                format_instructions: str,
-                errors: list[str] | None = None,
-            ):
+            self,
+            input_text: str,
+            format_instructions: str,
+            errors: list[str] | None = None,
+        ):
             error_description = ""
 
             if errors:
-                error_description = "Previously encountered errors:\n"+"\n".join(error for error in errors)+"\nMake sure to fix them and provide correct output.\n\n"
+                error_description = (
+                    "Previously encountered errors:\n"
+                    + "\n".join(error for error in errors)
+                    + "\nMake sure to fix them and provide correct output.\n\n"
+                )
 
             prompt = self.template.format(
                 format_instructions=format_instructions,
@@ -651,7 +700,6 @@ class SollarSystemPair(BasePair):
             )
 
             return prompt
-    
 
     def __init__(self):
         super().__init__()

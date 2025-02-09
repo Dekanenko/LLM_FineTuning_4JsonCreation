@@ -2,12 +2,15 @@ from pydantic import BaseModel, Field, EmailStr, conlist
 from enum import Enum
 from typing import Optional
 
+
 class CharacterNames(BaseModel):
     class FullName(BaseModel):
         name: str = Field(description="Name of the character")
         surname: str = Field(description="Surname of the character")
-    
-    fullname_list: list[FullName] = Field(description="List of full names for every character")
+
+    fullname_list: list[FullName] = Field(
+        description="List of full names for every character"
+    )
 
 
 class FictionalCharacter(BaseModel):
@@ -15,12 +18,12 @@ class FictionalCharacter(BaseModel):
         MAGE = "mage"
         ARCHER = "archer"
         WARRIOR = "warrior"
-    
+
     class CharacterRace(str, Enum):
         HUMAN = "human"
         ELF = "elf"
         ORK = "ork"
-    
+
     name: str = Field(description="Name of the character")
     age: int = Field(description="Age of the character")
     character_type: CharacterType = Field(description="Type of the character")
@@ -37,7 +40,7 @@ class TShirtOrder(BaseModel):
         MALE = "male"
         FEMALE = "female"
         UNIXSEX = "unisex"
-    
+
     class Type(str, Enum):
         HENLEY = "henley"
         VNECK = "vneck"
@@ -54,7 +57,7 @@ class TShirtOrder(BaseModel):
         L = "L"
         XL = "XL"
         XXL = "XXL"
-        
+
     type: Type = Field(description="Type of the t-shirt", default=Type.VNECK)
     size: Size = Field(description="Size of the t-shirt", default=Size.M)
     color: str = Field(description="Color of the t-shirt", default="black")
@@ -73,7 +76,7 @@ class FilmIdea(BaseModel):
         ROMANCE = "romance"
         SCIENCE_FICTION = "science_fiction"
         THRILLER = "thriller"
-    
+
     class Character(BaseModel):
         class Gender(str, Enum):
             MALE = "male"
@@ -85,11 +88,13 @@ class FilmIdea(BaseModel):
         gender: Gender = Field(description="Gender of the character")
         role: str = Field(description="Role of the character")
         biography: str = Field(description="Biography of the character")
-        
+
     genre: Genre = Field(description="Genre of the film")
     title: str = Field(description="Title of the film")
     description: str = Field(description="Description of the film")
-    characters: conlist(Character, min_length=1, max_length=5) = Field(..., description="Characters of the film")
+    characters: conlist(Character, min_length=1, max_length=5) = Field(
+        ..., description="Characters of the film"
+    )
     plot: str = Field(description="Plot of the film")
     setting: str = Field(description="Setting of the film")
     style: str = Field(description="Style of the film")
@@ -159,6 +164,7 @@ class Events(BaseModel):
 
     events: list[Event]
 
+
 class Resume(BaseModel):
     class Education(BaseModel):
         institution: str
@@ -215,9 +221,11 @@ class BookReview(BaseModel):
 
 
 class TextSummary(BaseModel):
-    text: str = Field(description="Text to summarize")   
+    text: str = Field(description="Text to summarize")
     summary: str = Field(description="Summary of the text")
-    keywords: conlist(str, min_length=1, max_length=10) = Field(description="Keywords of the text")
+    keywords: conlist(str, min_length=1, max_length=10) = Field(
+        description="Keywords of the text"
+    )
 
 
 class GameIdea(BaseModel):
@@ -227,7 +235,7 @@ class GameIdea(BaseModel):
         DRAMA = "drama"
         HORROR = "horror"
         MYSTERY = "mystery"
-    
+
     class Character(BaseModel):
         name: str = Field(description="Name of the character")
         age: int = Field(description="Age of the character")
@@ -295,14 +303,13 @@ class SollarSystem(BaseModel):
         size: float = Field(description="Size of the planet")
         population: int = Field(description="Population of the planet")
         distance_from_sun: float = Field(description="Distance from the sun")
-    
+
     class Star(BaseModel):
         name: str = Field(description="Name of the star")
         description: str = Field(description="Description of the star")
         size: float = Field(description="Size of the star")
         temperature: float = Field(description="Temperature of the star")
         radius: float = Field(description="Radius of the star")
-        
 
     name: str = Field(description="Name of the solar system")
     description: str = Field(description="Description of the solar system")
