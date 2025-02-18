@@ -5,7 +5,7 @@ from transformers import AutoTokenizer
 
 
 class JsonDataset(Dataset):
-    def __init__(self, file_path, tokenizer, max_length=1024):
+    def __init__(self, file_path, tokenizer, max_length=2048):
         self.tokenizer = tokenizer
         self.max_length = max_length
 
