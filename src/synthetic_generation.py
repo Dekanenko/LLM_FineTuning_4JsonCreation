@@ -6,19 +6,20 @@ from langchain_core.exceptions import OutputParserException
 
 from pydantic import BaseModel
 from loguru import logger
+from langchain.llms.base import LLM
 
 from src.prompts import BasePair
 
 
 async def _text_generation(
     prompt: StringPromptTemplate,
-    text_gen_model: str = "gpt-4o-mini",
-    text_gen_temperature: float = 1.3,
+    text_gen_llm: LLM = ChatOpenAI(
+        model="gpt-4o-mini", 
+        temperature=1.1, 
+        max_tokens=1024
+    ),
 ):
-    llm = ChatOpenAI(
-        model=text_gen_model, temperature=text_gen_temperature, max_tokens=4096
-    )
-    text_gen_chain = prompt | llm | StrOutputParser()
+    text_gen_chain = prompt | text_gen_llm | StrOutputParser()
 
     response = await text_gen_chain.ainvoke({})
     return response
@@ -30,13 +31,13 @@ async def _json_generation(
     input_text: str | None = None,
     errors: list[str] | None = None,
     retry_num: int = 2,
-    json_gen_model: str = "gpt-4o-mini",
-    json_gen_temperature: float = 0.7,
+    json_gen_llm: LLM = ChatOpenAI(
+        model="gpt-4o-mini", 
+        temperature=0.7, 
+        max_tokens=2048
+    ),
 ):
-    llm = ChatOpenAI(
-        model=json_gen_model, temperature=json_gen_temperature, max_tokens=4096
-    )
-    json_gen_chain = prompt | llm | StrOutputParser()
+    json_gen_chain = prompt | json_gen_llm | StrOutputParser()
     parser = PydanticOutputParser(pydantic_object=pydantic_object)
 
     try:
@@ -64,8 +65,7 @@ async def _json_generation(
             pydantic_object=pydantic_object,
             errors=errors,
             retry_num=retry_num - 1,
-            json_gen_model=json_gen_model,
-            json_gen_temperature=json_gen_temperature,
+            json_gen_llm=json_gen_llm,
         )
 
     prompt_text = prompt.format(
@@ -80,17 +80,31 @@ async def _json_generation(
 async def generate(
     pair: BasePair,
     sample_num: int = 1,
+    text_gen_llm: LLM = ChatOpenAI(
+        model="gpt-4o-mini", 
+        temperature=1.1, 
+        max_tokens=1024
+    ),
+    json_gen_llm: LLM = ChatOpenAI(
+        model="gpt-4o-mini", 
+        temperature=0.7, 
+        max_tokens=2048
+    ),
 ):
     data_samples = []
     for _ in range(sample_num):
         generated_text = ""
         if pair.text_generation_prompt:
-            generated_text = await _text_generation(pair.text_generation_prompt)
+            generated_text = await _text_generation(
+                prompt=pair.text_generation_prompt,
+                text_gen_llm=text_gen_llm,
+            )
 
         data_sample = await _json_generation(
             prompt=pair.json_generation_prompt,
             pydantic_object=pair.model,
             input_text=generated_text,
+            json_gen_llm=json_gen_llm,
         )
 
         if data_sample:

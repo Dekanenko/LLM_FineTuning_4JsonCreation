@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from langchain.prompts import StringPromptTemplate
+from typing import Optional, ClassVar
 
 from src.models import *
 
@@ -12,15 +13,15 @@ class BasePair(BaseModel):
 
 class CharacterNamesPair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
-        template = "Generate a small text (no more than 200 words) including characters with their names and surnames."
+        template: ClassVar[str] = "Generate a small text (no more than 200 words) including characters with their names and surnames."
 
         def format(self):
             return self.template
 
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a name and surname extractor. Your task is to identify and extract the names and surnames of characters from the given text.\n"
-            "### Input:\n{input_text}\n\n"
             "### Instructions:\n"
             "1. Extract characters' names and surnames clearly.\n"
             "2. Ensure that the JSON file contains a list of unique name-surname pairs (no duplicates).\n\n"
@@ -29,7 +30,9 @@ class CharacterNamesPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>user<|end_header_id|>\n{input_text}<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -64,7 +67,8 @@ class CharacterNamesPair(BasePair):
 
 class FictionalCharacterPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a creator of fictional characters. Your task is to create a unique character for the game.\n"
             "### Instructions:\n"
             "1. Character must be unique and have engaging properties and story.\n"
@@ -76,7 +80,8 @@ class FictionalCharacterPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -109,15 +114,15 @@ class FictionalCharacterPair(BasePair):
 
 class TShirtOrderPair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
-        template = "Generate a small text (no more than 50 words) making an order for a t-shirt. Describe the desired t-shirt in vivid details."
+        template: ClassVar[str] = "Generate a small text (no more than 50 words) making an order for a t-shirt. Describe the desired t-shirt in vivid details."
 
         def format(self):
             return self.template
 
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a t-shirt order extractor. Your task is to identify and extract the t-shirt order details from the given text.\n"
-            "### Input:\n{input_text}\n\n"
             "### Instructions:\n"
             "1. Extract t-shirt order details including type, size, color, quantity, and gender.\n"
             "2. If specific details are not mentioned, use the default values.\n\n"
@@ -126,7 +131,9 @@ class TShirtOrderPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>user<|end_header_id|>\n{input_text}<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -161,7 +168,8 @@ class TShirtOrderPair(BasePair):
 
 class FilmIdeaPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a visionary film creator known for generating unique, thought-provoking movie concepts. Create an original film idea that challenges conventions and captivates audiences.\n"
             "### Instructions:\n"
             "1. Create a bold, innovative concept that hasn't been seen before in cinema.\n"
@@ -176,7 +184,8 @@ class FilmIdeaPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -209,7 +218,8 @@ class FilmIdeaPair(BasePair):
 
 class ItineraryPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a travel itinerary planner. Create a detailed travel itinerary that maximizes the traveler's experience.\n"
             "### Instructions:\n"
             "1. Plan activities that are logistically feasible and time-appropriate.\n"
@@ -223,7 +233,8 @@ class ItineraryPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -256,7 +267,8 @@ class ItineraryPair(BasePair):
 
 class RecipePair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a professional chef creating detailed recipes. Create a complete recipe with precise measurements and clear instructions.\n"
             "### Instructions:\n"
             "1. Provide a clear, descriptive title for the recipe.\n"
@@ -270,7 +282,8 @@ class RecipePair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -303,15 +316,15 @@ class RecipePair(BasePair):
 
 class EventPair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
-        template = "Generate a text (no more than 100 words) where different people (they must be named) describe their event. Mention the date, time, location and the people attending."
+        template: ClassVar[str] = "Generate a text (no more than 100 words) where different people (they must be named) describe their event. Mention the date, time, location and the people attending."
 
         def format(self):
             return self.template
 
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are an event details extractor. Your task is to identify and extract event information from the given text.\n"
-            "### Input:\n{input_text}\n\n"
             "### Instructions:\n"
             "1. Extract the event title, date, start time, end time, and location.\n"
             "2. Identify all attendees mentioned in the text, including their names and email addresses.\n"
@@ -321,7 +334,9 @@ class EventPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>user<|end_header_id|>\n{input_text}<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -356,15 +371,15 @@ class EventPair(BasePair):
 
 class ResumePair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
-        template = "Generate one resume (no more than 100 words) outlining the following information: full name, email, phone number, education, work experience, skills. Make it unique and creative."
+        template: ClassVar[str] = "Generate one resume (no more than 100 words) outlining the following information: full name, email, phone number, education, work experience, skills. Make it unique and creative."
 
         def format(self):
             return self.template
 
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a resume information extractor. Your task is to identify and extract resume details from the given text.\n"
-            "### Input:\n{input_text}\n\n"
             "### Instructions:\n"
             "1. Extract the person's full name, email, and phone number if provided.\n"
             "2. Identify all education entries, including institution, degree, and graduation year.\n"
@@ -375,7 +390,9 @@ class ResumePair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>user<|end_header_id|>\n{input_text}<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -410,7 +427,8 @@ class ResumePair(BasePair):
 
 class GameArtifactPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a legendary artificer crafting unique magical items and artifacts. Create an extraordinary artifact for a fantasy game world.\n"
             "### Instructions:\n"
             "1. Create a powerful and unique artifact with an intriguing name and compelling description.\n"
@@ -425,7 +443,8 @@ class GameArtifactPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -458,15 +477,15 @@ class GameArtifactPair(BasePair):
 
 class BookReviewPair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
-        template = "Generate a book review (no more than 200 words). Mention data about the reviewer (name, email, rating, review). Mention the title, author, publication year, genre of the book. Provide an interesting review."
+        template: ClassVar[str] = "Generate a book review (no more than 200 words). Mention data about the reviewer (name, email, rating, review). Mention the title, author, publication year, genre of the book. Provide an interesting review."
 
         def format(self):
             return self.template
 
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a book review information extractor. Your task is to identify and extract book review details from the given text.\n"
-            "### Input:\n{input_text}\n\n"
             "### Instructions:\n"
             "1. Extract the book details (title, author, publication year, genre).\n"
             "2. Extract the reviewer's information (name, email).\n"
@@ -477,7 +496,9 @@ class BookReviewPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>user<|end_header_id|>\n{input_text}<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -512,15 +533,15 @@ class BookReviewPair(BasePair):
 
 class TextSummaryPair(BasePair):
     class TextGenerationPrompt(StringPromptTemplate):
-        template = "Generate a unique text on any topic. Generate around 100 words."
+        template: ClassVar[str] = "Generate a unique text on any topic. Generate around 100 words."
 
         def format(self):
             return self.template
 
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a text summarizer. Your task is to analyze and summarize the given text.\n"
-            "### Input:\n{input_text}\n\n"
             "### Instructions:\n"
             "1. Create a concise summary that captures the main points of the text.\n"
             "2. The summary should be no more than 25% of the original text length.\n"
@@ -530,7 +551,9 @@ class TextSummaryPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>user<|end_header_id|>\n{input_text}<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -565,7 +588,8 @@ class TextSummaryPair(BasePair):
 
 class GameIdeaPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a visionary game designer tasked with creating an innovative and engaging game concept.\n"
             "### Instructions:\n"
             "1. Create a unique game concept that combines compelling gameplay mechanics with an engaging narrative.\n"
@@ -580,7 +604,8 @@ class GameIdeaPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -613,7 +638,8 @@ class GameIdeaPair(BasePair):
 
 class HousePair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a visionary architect and real estate expert tasked with creating a detailed description of a unique property.\n"
             "### Instructions:\n"
             "1. Create a distinctive house with compelling architectural features and a cohesive design theme.\n"
@@ -628,7 +654,8 @@ class HousePair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
@@ -661,7 +688,8 @@ class HousePair(BasePair):
 
 class SollarSystemPair(BasePair):
     class JsonGenerationPrompt(StringPromptTemplate):
-        template = (
+        template: ClassVar[str] = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
             "You are a cosmic architect tasked with designing an extraordinary and unique solar system.\n"
             "### Instructions:\n"
             "1. Create a distinctive star system with compelling astronomical features and coherent cosmic dynamics.\n"
@@ -676,7 +704,8 @@ class SollarSystemPair(BasePair):
             "2. Strictly adhere to the following JSON format:\n"
             "{format_instructions}\n"
             "{error_description}\n"
-            "### Generated JSON file:\n"
+            "<|eot_id|>\n"
+            "<|start_header_id|>assistant<|end_header_id|>"
         )
 
         def format(
