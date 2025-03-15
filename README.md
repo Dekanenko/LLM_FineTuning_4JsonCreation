@@ -89,4 +89,4 @@ The fine-tuned model can be used for various applications requiring structured J
 
 ## License
 
-[MIT License](LICENSE) 
+[MIT License](https://opensource.org/licenses/MIT) 
