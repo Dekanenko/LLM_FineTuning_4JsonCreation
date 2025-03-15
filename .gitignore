@@ -70,3 +70,5 @@ coverage.xml
 *.log
 *.sqlite
 *.db 
+
+.netrc

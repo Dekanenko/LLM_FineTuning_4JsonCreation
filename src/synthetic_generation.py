@@ -10,13 +10,15 @@ from langchain.llms.base import LLM
 
 from src.prompts import BasePair
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 async def _text_generation(
     prompt: StringPromptTemplate,
     text_gen_llm: LLM = ChatOpenAI(
-        model="gpt-4o-mini", 
-        temperature=1.1, 
-        max_tokens=1024
+        model="gpt-4o-mini", temperature=1.1, max_tokens=1024
     ),
 ):
     text_gen_chain = prompt | text_gen_llm | StrOutputParser()
@@ -30,11 +32,9 @@ async def _json_generation(
     pydantic_object: BaseModel,
     input_text: str | None = None,
     errors: list[str] | None = None,
-    retry_num: int = 2,
+    retry_num: int = 1,
     json_gen_llm: LLM = ChatOpenAI(
-        model="gpt-4o-mini", 
-        temperature=0.7, 
-        max_tokens=2048
+        model="gpt-4o-mini", temperature=0.7, max_tokens=2048
     ),
 ):
     json_gen_chain = prompt | json_gen_llm | StrOutputParser()
@@ -50,9 +50,9 @@ async def _json_generation(
         )
         parser.parse(response)
     except OutputParserException as e:
-        logger.debug(f"Error occured: \n{e}\nRetry num:{retry_num}")
+        # logger.debug(f"Error occured: \n{e}\nRetry num:{retry_num}")
         if retry_num == 0:
-            logger.warning(f"Cannot parse the string, last error:\n{e}")
+            # logger.warning(f"Cannot parse the string, last error:\n{e}")
             return None
 
         if errors:
@@ -62,6 +62,7 @@ async def _json_generation(
 
         return await _json_generation(
             prompt=prompt,
+            input_text=input_text,
             pydantic_object=pydantic_object,
             errors=errors,
             retry_num=retry_num - 1,
@@ -81,17 +82,14 @@ async def generate(
     pair: BasePair,
     sample_num: int = 1,
     text_gen_llm: LLM = ChatOpenAI(
-        model="gpt-4o-mini", 
-        temperature=1.1, 
-        max_tokens=1024
+        model="gpt-4o-mini", temperature=1.1, max_tokens=1024
     ),
     json_gen_llm: LLM = ChatOpenAI(
-        model="gpt-4o-mini", 
-        temperature=0.7, 
-        max_tokens=2048
+        model="gpt-4o-mini", temperature=0.7, max_tokens=2048
     ),
 ):
     data_samples = []
+    errors = 0
     for _ in range(sample_num):
         generated_text = ""
         if pair.text_generation_prompt:
@@ -109,5 +107,7 @@ async def generate(
 
         if data_sample:
             data_samples.append(data_sample)
+        else:
+            errors += 1
 
-    return data_samples
+    return data_samples, errors
